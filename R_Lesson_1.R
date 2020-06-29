@@ -33,7 +33,7 @@ exp(1)
 # Also, dont hesitate to create new recipes, instead of writing just one recipe after the other! That's not how Chefs would handle it!
 
 # now lets try some variables, to make a^2 + b^2 = c^2
-a = 5
+a <- 5
 b = 2
 c = sqrt(a^2 + b^2)
 # Check the environment on the top right corner, there you see the results! Thats not very handy. There are better ways:
@@ -46,9 +46,14 @@ c
 # 10, 15, 20, 25, 30 Degrees Celsius. 
 # This kind of data is stored in a "vector". It's a variable that stores more than 1 value:
 temperature = c(10, 15, 20, 25, 30)
+c()
 # You can create those vectors by using : c(number_1, number_2, number_3, ...)
 # The result looks like that:
 temperature
+
+# If you are interested in a sequence of numbers you can also use the ":" operator, look:
+1:5
+# This gives a vector from 1 to 5
 
 # When you want to do the same math as above with this vector, every element of that vector will be affected:
 temperature * 5
@@ -60,6 +65,7 @@ salinity = c(28, 30, 32, 30, 31)
 temperature * salinity
 # Well that works! Even though this calculation makes absolutely no sense at all!
 # But what if one of the vectors has another length:
+temperature = c(10, 15, 20, 25, 30)
 salinity = c(28, 30, 32, 30)
 
 temperature * salinity
@@ -120,6 +126,9 @@ length(salinity)
 1 < 2
 1 != 2
 
+2 >= 1
+2 <= 1
+
 # They all produce one outcome: TRUE! But what if something is not correct:
 
 2 == 1
@@ -130,6 +139,8 @@ length(salinity)
 length(salinity) == length(temperature)
 
 # It's FALSE! Well done, R ;-)
+
+# quotation marks :D
 
 # This is called a logical expression, or just BOOLEAN. 
 # A boolean is also the kind of variable that stores "TRUE" or "FALSE".. 
