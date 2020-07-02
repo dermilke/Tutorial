@@ -1,4 +1,4 @@
-### R_Lesson_3
+### R_Lesson_4
 
 # This lesson will be all about plotting! Finally, I think this is the most pleasent part of working with R: Visualization!!!
 
