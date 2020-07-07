@@ -12,7 +12,7 @@ rm(list=ls(all=T))
 temperature = c(10, 12, 15, 13, 18)
 salinity = c(30, 29, 28, 30, 31)
 
-cbind(temperature, salinity)
+cbind(temperature, salinity, c(1,2,3,4,5))
 
 # the outcome of that function needs to be analysed:
 # First, you see rows and columns. Both have names:
@@ -59,7 +59,8 @@ attributes(table)
 # Now let's check out the rownames, what they actually meant:
 table
 
-table[1,]
+table[,1]
+
 table[2,]
 
 # So, the rownames show us how to access rows from tables. It's similar to accessing elements from vectors.
@@ -130,6 +131,8 @@ table[7]
 table_df = data.frame(temperature, salinity)
 table_df
 
+table_df$salinity
+
 class(table_df)
 attributes(table_df)
 
@@ -144,6 +147,7 @@ data.frame(temperature, salinity, row.names = NULL)
 # The data.frame format gives us more options on how to access elements from it. There is one important way to do that, look:
 table_df$temperature
 table_df$salinity
+
 
 # The syntax is easy: tablename$parametername
 # And R-Studio also includes an auto-complete for that (similar to the tab in BASH).
@@ -162,13 +166,18 @@ class(table)
 table_converted = as.data.frame(table)
 class(table_converted)
 
+as.numeric()
+as.logical()
+as.character()
+as.matrix()
+
 # There exists a conversion function for nearly every type of object. That means, you can also try to use the conversion to
 # make a numerical vector into a character vector:
 
 numbers = c(2,3,4,5)
 class(numbers)
 as.character(numbers)
-class(as.character(numbers))
+class(as.character(c(2,3,4)))
 
 # Some conversions make no sense:
 as.logical(numbers)
@@ -204,7 +213,7 @@ str(Environment_Import)
 # A factor is a little bit more complicated to explain. Because it consists of 2 things:
 
 # 1. A vector including all the vector elements. This vector is usually displayed as text elements. Lets look at one:
-Environment_Import$Cruise
+Environment_Import$Salinity
 # So we see the vector elements, which are either SO248 or SO254
 # But you also see that R doesn't use "" quotation marks for the text! So, something is different.
 Environment_Import$Cruise[1]
@@ -239,6 +248,8 @@ as.character(Environment_Import$Cruise)
 # To save this conversion, we have of course to assign it back to where it came from! 
 Environment_Import$Cruise = as.character(Environment_Import$Cruise)
 
+Environment_Import$Station[1:290] = -1:-290
+
 # Check it:
 str(Environment_Import)
 # Now that variable is a chr (character)! Well done!
@@ -247,27 +258,34 @@ str(Environment_Import)
 # Of course that also works with the other ways as well:
 Environment_Import[,1] = as.character(Environment_Import$Cruise)
 
+Environment_Import[1:5,]
+
 # One more fact: Matrix and Data.Frames are both subcategories of another table-type.
 # This table-type is called List!
 # This table type has nearly no restrictions. You can put vectors of different length and different type into the same list.
 
-temperature = c(11,12,13)
+temperature = c(11,12,13,19)
 salinity = c(31,30,29,30,30,38)
+
+data.frame(temperature, salinity)
+
 province = c("NATL", "NAGR", "SPLR", "FKLD")
 
 example_list = list(Temp = temperature, Sal = salinity, Prov = province)
 example_list
+
 class(example_list)
 
 # You see, the output is not what we would expect if we want to look at a table. Here, every parameter has its own line and can
 # be accessed by its name.
-example_list$Temp
+class(example_list$Temp)
 
 example_list[,1]
 # But this way of accessing the vectors won't work anymore! Instead you need to first access the object number within the list
 # (easily: first object: number 1, second object: number 2 etc.)
 
-example_list[1]
+temp_vector = example_list[1]
+
 # And now you still have a list but reduced to only the first object within the list!
 class(example_list[1])
 # Well, that's not very helpful we want to have the parameter as a vector, not as a list! Because lists are very complicated to 

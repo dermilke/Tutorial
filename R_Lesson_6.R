@@ -24,8 +24,12 @@ library(tidyverse)
 
 # Okay, now our first test-graphic:
 
+aes(x = Environment_tibble$Latitude, y = Environment_tibble$Pot_Temperature)
+
 ggplot(Environment_tibble, aes(x = Latitude, y = Pot_Temperature)) +
-  geom_point()
+  geom_point() +
+  geom_point(aes(y = Salinity)) +
+  
 
 # This is the simplest kind of plot, a scatterplot using 2 different parameter.
 # When we break apart the two commands, we see the first function:
@@ -55,7 +59,7 @@ aes(x = Environment_tibble$Latitude)
 # These default options are customizable, of course ;-)
 # Let's play around
 
-ggplot(Environment_tibble, aes(x = Latitude, y = Pot_Temperature, color = Province)) +
+ggplot(Environment_tibble, aes(x = Latitude, y = Pot_Temperature, color = Salinity)) +
   geom_point(size = 3, shape = 21) +
   labs(x = "Latitude along transect", 
        y = "Temperature [°C]",
@@ -83,7 +87,7 @@ ggplot(Environment_tibble, aes(x = Latitude, y = Pot_Temperature, color = Salini
        y = "Temperature [°C]",
        title = "This is our first GGplot example",
        subtitle = "nice") +
-  scale_x_continuous(breaks = c(-50, -25, 0, 25, 50)) +
+  scale_x_continuous(breaks = c(-50, -25, 0, 25, 50), labels = c("A", "B", "C", "D", "E")) +
   scale_color_continuous()
 
 # You can see the difference especially when looking at the legend on the right. To display a continuous parameter as a color

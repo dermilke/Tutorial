@@ -53,7 +53,7 @@ plot(Environment_Import$Pot_Temperature, Environment_Import$Salinity, col = Envi
 # for every point if you give it a vector with as many entries as you have data-points. 
 # But you can give it also only one color and then it uses that color for every point:
 
-plot(Environment_Import$Pot_Temperature, Environment_Import$Salinity, col = "red")
+plot(Environment_Import$Pot_Temperature, Environment_Import$Salinity, col = "navy")
 
 # In our case, we gave it a vector with numbers
 Environment_Import$Depth
@@ -115,7 +115,7 @@ plot(Environment_Import$Latitude[Environment_Import$Depth <= 40],
 # But there are a few functions, that build on top of a plotted figure:
 
 grid()
-points(0, max(Environment_Import$Pot_Temperature), pch = 21, bg = "red", cex = 1.8)
+points(0, max(Environment_Import$Pot_Temperature), pch = 21, bg = "red", cex = 1.5)
 text(5, 30, "Equator", adj = 0, col = "red")
 legend("bottomleft", legend = "Equator", pch = 21, pt.bg = "red", title = "Legend:", bty = "n")
 
@@ -124,17 +124,19 @@ legend("bottomleft", legend = "Equator", pch = 21, pt.bg = "red", title = "Legen
 
 # One easy task would be now to produce a function that does all of that for us and we only have to specify the parameters:
 
-easy_plot = function(param_1, param_2) {
+easy_plot = function(param_1, param_2, xlabel, ylabel) {
   
   plot(param_1,
        param_2,
+       xlab = xlabel,
+       ylab = ylabel,
        bty = "n")
   
   grid()
   
 }
 
-easy_plot(Environment_Import$Oxygen, Environment_Import$Chlorophyll_a)
+easy_plot(Environment_Import$Oxygen, Environment_Import$Chlorophyll_a, "Oxygen", "Chlorophyll")
 
 # Hm, okay that didn't make any sense because we still need to define all the labels and axis-limits manually. 
 # But nice for practicing ;-)

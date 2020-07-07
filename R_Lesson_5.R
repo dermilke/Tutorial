@@ -12,7 +12,7 @@
 # they distribute among the R-users.
 # To use those packages from the CRAN network, it takes us nothing else than the name of the package itself and one line of code:
 
-install.packages("vegan")
+# install.packages("vegan")
 
 # Running this command lets R search in the CRAN database for the package name and downloads it in case there is a match.
 # This package will then be installed.
@@ -54,7 +54,9 @@ library(tidyverse)
 # converts our data into a tibble. 
 
 read_csv("Environment_Data.csv")
+
 Environment_tibble = read_csv("Environment_Data.csv")
+Environment_df = read.csv("Environment_Data.csv")
 
 # You see the changes when you look at its output in the console. It looks much better, more informative. But it constraints
 # its output to only as many parameters, as fit on the screen! 
@@ -75,7 +77,9 @@ filter(Environment_tibble, Pot_Temperature > 20)
 # There is another specialty in this command. Look at the Pot_Temperature call. Usually we would have to write it in the
 # way: 
 
-Environment_tibble$Pot_Temperature
+Environment_tibble$Pot_Temperature > 20
+
+Pot_Temperature > 20
 
 # To access the Temperature-parameter-vector. But the dplyr functions automatically know that they have to look for that parameter
 # in the dataframe/tibble that we used as input! 
@@ -106,8 +110,11 @@ select(Environment_tibble, Pot_Temperature)
 select(Environment_tibble, 1:3)
 
 # And it has a sister-function to select by logical:
-select_if(Environment_tibble, is.numeric)
+select_if(Environment_tibble, is.character)
 
+is.numeric(Environment_tibble[,5])
+is.numeric(Environment_tibble$Bot_Depth)
+is.numeric(Environment_tibble$Depth)
 # This was a very cool shortcut to automatically select numeric parameter (the ones that are no string, dates or others).
 # But the way we used this command was completely different than the ones before. Instead of a logical or a sequence of numbers,
 # we used a function as a second input. This time without the parentheses: is.numeric()
@@ -130,6 +137,7 @@ random_selector_function()
 # This function randomy returns TRUE or FALSE! The function runif(1) returns a vector of length 1 with random values in it. 
 # Check the help-page of this command to see how it works!
 # Now lets try to use this random selector to select parameter-vectors:
+
 select_if(Environment_tibble, random_selector_function)
 
 # Everytime you run this line of code, the result should look differently, because every parameter was chosen randomly. 
@@ -145,7 +153,9 @@ select_if(Environment_tibble, random_selector_function)
 # (or simple mathematical operations)
 
 mutate(Environment_tibble, Pot_Temperature = Pot_Temperature + 10)
-mutate(Environment_tibble, New_Parameter = Salinity * Pot_Temperature)
+new_tibble = mutate(Environment_tibble, New_Parameter = Salinity * Pot_Temperature)
+
+new_tibble$New_Parameter
 
 # We can again define functions that do the job for us. For example, let's try to standardize one parameter, by first:
 # substracting the mean-value of that parameter from all values. Then let's divide all resulting values by their standard-deviation.
@@ -156,8 +166,11 @@ standardize_parameter = function(x) {
   
 }
 
+standardize_parameter(new_tibble$New_Parameter)
+
 test_tibble = mutate(Environment_tibble, Temp_standard = standardize_parameter(Pot_Temperature))
-select(test_tibble, Pot_Temperature, Temp_standard)
+
+select(test_tibble, Pot_Temperature)
 
 # Nice! This way we can easily standardize our numeric parameter vectors!
 
@@ -192,10 +205,14 @@ mutate_if(test_tibble, random_selector_function, standardize_parameter)
 # like the following lines of code (very hideous):
 
 filtered_test_tibble = filter(test_tibble, Pot_Temperature > 20)
+
 manipulated_test_tibble = mutate(filtered_test_tibble, Standardize_Temp = standardize_parameter(Pot_Temperature))
+
 standardized_Temperature = select(manipulated_test_tibble, Standardize_Temp)
 
 standardized_Temperature
+
+select(mutate(filter(test_tibble, Pot_Temperature > 20),Standardize_Temp = standardize_parameter(Pot_Temperature)), Standardize_Temp)
 
 # THAT was exhausting! 
 # Not only hard to write or hard to read, it also consumes a lot of memory space of your computer! Because it tries to save 
@@ -235,7 +252,7 @@ standardized_Temperature
 
 test_tibble %>%
   filter(Pot_Temperature > 20) %>%
-  mutate(New_Param = .$Pot_Temperature * .$Salinity) %>%
+  mutate(New_Param = Pot_Temperature * Salinity) %>%
   .$New_Param
 
 # When we created our new parameter New_Param within the mutate() function, we used the "." to refer to the table we got as an 
